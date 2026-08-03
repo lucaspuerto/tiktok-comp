@@ -1,33 +1,560 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
+<title>Competição TikTok — Mentorados</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Competição TikTok — Mentorados</title>
 <style>
-  :root { --bg: #F2EFFA; --card: #FFFFFF; --ink: #17162B; --muted: #6F6C85; --accent: #6D43E8; --border: #E4E0F2; }
+  :root {
+    --bg: #F2EFFA;
+    --card: #FFFFFF;
+    --ink: #17162B;
+    --muted: #6F6C85;
+    --accent: #6D43E8;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #EFEAFD;
+    --border: #E4E0F2;
+    --border-strong: #CDC7E8;
+    --shadow: 0 1px 2px rgba(23, 22, 43, 0.05), 0 6px 20px rgba(109, 67, 232, 0.05);
+    --live: #0B7F58;
+    --live-soft: #E0F4EC;
+    --warn-soft: #FDF3E0;
+    --warn-ink: #A86000;
+    /* composição de pontos — paleta categórica validada (light vs #fff) */
+    --c-posts: #6D43E8;
+    --c-views: #0089AB;
+    --c-bonus: #D61F7F;
+    --gold: #A86000;   --gold-soft: #FBEFD7;
+    --silver: #5B5874; --silver-soft: #EDEBF6;
+    --bronze: #9A4E20; --bronze-soft: #F7E8DD;
+  }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #0D0C1D; --card: #17162E; --ink: #ECEAF8; --muted: #918DAD; --accent: #A78BFA; --border: #2A2749; }
+    :root {
+      --bg: #0D0C1D; --card: #17162E; --ink: #ECEAF8; --muted: #918DAD;
+      --accent: #A78BFA; --accent-ink: #14122B; --accent-soft: #241F45;
+      --border: #2A2749; --border-strong: #3B3768; --shadow: none;
+      --live: #34D399; --live-soft: #123227;
+      --warn-soft: #33270F; --warn-ink: #D17F00;
+      /* composição — variantes validadas vs navy */
+      --c-posts: #8B66F7; --c-views: #0E9DB8; --c-bonus: #EC4899;
+      --gold: #E0A93E;   --gold-soft: #33270F;
+      --silver: #A6A3C0; --silver-soft: #242138;
+      --bronze: #D0763B; --bronze-soft: #2E1D12;
+    }
   }
+  :root[data-theme="light"] {
+    --bg: #F2EFFA; --card: #FFFFFF; --ink: #17162B; --muted: #6F6C85;
+    --accent: #6D43E8; --accent-ink: #FFFFFF; --accent-soft: #EFEAFD;
+    --border: #E4E0F2; --border-strong: #CDC7E8;
+    --shadow: 0 1px 2px rgba(23, 22, 43, 0.05), 0 6px 20px rgba(109, 67, 232, 0.05);
+    --live: #0B7F58; --live-soft: #E0F4EC;
+    --warn-soft: #FDF3E0; --warn-ink: #A86000;
+    --c-posts: #6D43E8; --c-views: #0089AB; --c-bonus: #D61F7F;
+    --gold: #A86000; --gold-soft: #FBEFD7;
+    --silver: #5B5874; --silver-soft: #EDEBF6;
+    --bronze: #9A4E20; --bronze-soft: #F7E8DD;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D0C1D; --card: #17162E; --ink: #ECEAF8; --muted: #918DAD;
+    --accent: #A78BFA; --accent-ink: #14122B; --accent-soft: #241F45;
+    --border: #2A2749; --border-strong: #3B3768; --shadow: none;
+    --live: #34D399; --live-soft: #123227;
+    --warn-soft: #33270F; --warn-ink: #D17F00;
+    --c-posts: #8B66F7; --c-views: #0E9DB8; --c-bonus: #EC4899;
+    --gold: #E0A93E; --gold-soft: #33270F;
+    --silver: #A6A3C0; --silver-soft: #242138;
+    --bronze: #D0763B; --bronze-soft: #2E1D12;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
-    background: var(--bg); color: var(--ink); margin: 0; min-height: 100vh;
-    display: flex; align-items: center; justify-content: center; text-align: center;
+    background: var(--bg);
+    color: var(--ink);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    margin: 0;
   }
-  .card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 40px 28px; max-width: 420px; margin: 20px; }
-  .big { font-size: 44px; }
-  h1 { font-size: 20px; margin: 12px 0 8px; }
-  p { color: var(--muted); font-size: 14px; margin: 0; }
-  .accent { color: var(--accent); font-weight: 700; }
+  .wrap { max-width: 680px; margin: 0 auto; padding: 28px 16px 80px; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .label {
+    font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  }
+  .label--accent { color: var(--accent); }
+
+  /* ── header ─────────────────────────────── */
+  header { margin-bottom: 18px; }
+  .h-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .h-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 4px 0 8px; text-wrap: balance; }
+  .h-rule {
+    width: 88px; height: 3px; border: 0; margin: 0 0 16px; border-radius: 2px;
+    background: linear-gradient(90deg, var(--c-posts), var(--c-bonus), var(--c-views));
+  }
+  .h-meta { font-size: 12px; color: var(--muted); }
+  .h-meta strong { color: var(--ink); font-weight: 600; }
+  #theme-btn {
+    border: 1px solid var(--border-strong); background: var(--card); color: var(--ink);
+    border-radius: 10px; min-width: 44px; min-height: 44px; font-size: 17px; cursor: pointer;
+  }
+
+  /* ── seletor de mês ─────────────────────── */
+  .months { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0 10px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .months::-webkit-scrollbar { display: none; }
+  .m-chip {
+    flex: 0 0 auto; display: inline-flex; align-items: center; gap: 7px;
+    border: 1px solid var(--border-strong); background: var(--card); color: var(--ink);
+    border-radius: 999px; padding: 10px 16px; min-height: 44px; font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+  .m-chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .m-live {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em; border-radius: 999px; padding: 2px 7px;
+    background: var(--live-soft); color: var(--live);
+  }
+  .m-chip[aria-pressed="true"] .m-live { background: rgba(255,255,255,0.22); color: inherit; }
+
+  .banner {
+    display: flex; align-items: center; gap: 10px; border-radius: 14px; padding: 12px 16px; margin: 6px 0 16px;
+    background: var(--gold-soft); color: var(--gold); font-weight: 700; font-size: 14px;
+  }
+
+  /* ── cards genéricos ────────────────────── */
+  section { margin-bottom: 26px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    box-shadow: var(--shadow); padding: 16px;
+  }
+  h2 { font-size: 15px; font-weight: 700; margin: 0 0 2px; }
+  .sub { font-size: 12px; color: var(--muted); margin: 0 0 12px; }
+
+  /* ── pódio ──────────────────────────────── */
+  .podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 8px; align-items: end; }
+  .p-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);
+    padding: 14px 8px 12px; text-align: center;
+  }
+  .p-card.p-1 { border-color: var(--gold); padding-top: 20px; padding-bottom: 18px; }
+  .medal {
+    width: 34px; height: 34px; border-radius: 50%; margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+  }
+  .medal-1 { background: var(--gold-soft); color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+  .medal-2 { background: var(--silver-soft); color: var(--silver); box-shadow: inset 0 0 0 2px var(--silver); }
+  .medal-3 { background: var(--bronze-soft); color: var(--bronze); box-shadow: inset 0 0 0 2px var(--bronze); }
+  .p-name { font-size: 13px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 4px; }
+  .p-handle { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 4px; }
+  .p-pts { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; margin-top: 6px; }
+  .p-1 .p-pts { font-size: 24px; color: var(--accent); }
+  .p-pts small { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+  .delta { font-size: 11px; font-weight: 700; }
+  .delta.up { color: var(--live); }
+  .delta.down { color: var(--c-bonus); }
+  .delta.same { color: var(--muted); }
+
+  /* ── placar geral ───────────────────────── */
+  .board { width: 100%; border-collapse: collapse; }
+  .board th {
+    text-align: left; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    font-weight: 600; padding: 4px 6px; border-bottom: 1px solid var(--border);
+  }
+  .board th:last-child, .board td.pts { text-align: right; }
+  .board td { padding: 0; border-bottom: 1px solid var(--border); }
+  .board tr:last-child td { border-bottom: 0; }
+  .row-main { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 6px; background: none; border: 0; font: inherit; color: inherit; cursor: pointer; text-align: left; }
+  .rank { flex: 0 0 26px; text-align: center; font-weight: 700; font-size: 13px; color: var(--muted); }
+  .rank.r1 { color: var(--gold); } .rank.r2 { color: var(--silver); } .rank.r3 { color: var(--bronze); }
+  .row-id { flex: 1 1 auto; min-width: 0; }
+  .row-name { font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .comp-bar { display: flex; gap: 2px; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 5px; }
+  .comp-bar i { display: block; height: 100%; border-radius: 2px; }
+  .comp-posts { background: var(--c-posts); }
+  .comp-views { background: var(--c-views); }
+  .comp-bonus { background: var(--c-bonus); }
+  .row-pts { flex: 0 0 auto; font-size: 15px; font-weight: 800; }
+  .row-caret { flex: 0 0 auto; color: var(--muted); font-size: 11px; transition: transform 0.15s; }
+  tr.open .row-caret { transform: rotate(90deg); }
+  .row-detail { display: none; padding: 2px 10px 14px 42px; }
+  tr.open .row-detail { display: block; }
+  .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+  .d-item { background: var(--accent-soft); border-radius: 10px; padding: 8px 10px; }
+  .d-item .label { font-size: 9px; }
+  .d-item b { font-size: 14px; }
+  .d-breakdown { font-size: 12px; color: var(--muted); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; vertical-align: baseline; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; font-size: 11px; color: var(--muted); }
+
+  /* ── rankings individuais ───────────────── */
+  .rk-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+  .rk-tab {
+    flex: 1; border: 1px solid var(--border-strong); background: var(--card); color: var(--muted);
+    border-radius: 10px; min-height: 44px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+  }
+  .rk-tab[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .rk-row { display: flex; align-items: center; gap: 10px; min-height: 40px; }
+  .rk-name { flex: 0 0 34%; min-width: 0; font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rk-track { flex: 1 1 auto; height: 10px; border-radius: 5px; background: var(--accent-soft); overflow: hidden; }
+  .rk-fill { height: 100%; border-radius: 0 4px 4px 0; background: var(--accent); min-width: 2px; }
+  .rk-val { flex: 0 0 auto; font-size: 12px; font-weight: 700; min-width: 52px; text-align: right; }
+  .rk-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.05em; border-radius: 999px; padding: 1px 6px;
+    background: var(--warn-soft); color: var(--warn-ink); white-space: nowrap;
+  }
+
+  /* ── cards por mentorado ────────────────── */
+  .mentees { display: grid; grid-template-columns: 1fr; gap: 10px; }
+  @media (min-width: 520px) { .mentees { grid-template-columns: 1fr 1fr; } }
+  .mt-head { display: flex; align-items: center; gap: 10px; }
+  .avatar {
+    flex: 0 0 40px; width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px;
+    color: var(--accent-ink);
+  }
+  .mt-name { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mt-handle { font-size: 11px; }
+  .mt-handle a { color: var(--muted); text-decoration: none; }
+  .mt-rank { margin-left: auto; text-align: right; }
+  .mt-rank b { font-size: 16px; }
+  .mt-rank .label { font-size: 9px; }
+  .spark-wrap { margin: 10px 0 4px; }
+  .spark { width: 100%; height: 44px; display: block; }
+  .mt-stats { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+  .mt-stats b { color: var(--ink); }
+  .mt-posts { list-style: none; margin: 8px 0 0; padding: 8px 0 0; border-top: 1px solid var(--border); }
+  .mt-posts li { margin-bottom: 6px; font-size: 12px; display: flex; gap: 8px; align-items: baseline; }
+  .mt-posts a { color: var(--ink); text-decoration: none; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mt-posts a:hover { color: var(--accent); }
+  .mt-posts .v { color: var(--muted); flex: 0 0 auto; }
+
+  /* ── avisos / regras / vazio ────────────── */
+  .warn-card { background: var(--warn-soft); border: 0; color: var(--warn-ink); font-size: 13px; }
+  .warn-card b { display: block; margin-bottom: 4px; }
+  .rules { font-size: 13px; color: var(--muted); }
+  .rules li { margin-bottom: 6px; }
+  .rules b { color: var(--ink); }
+  .empty { text-align: center; padding: 40px 16px; color: var(--muted); font-size: 14px; }
+  .empty .big { font-size: 34px; margin-bottom: 8px; }
+  footer { margin-top: 32px; font-size: 11px; color: var(--muted); text-align: center; }
 </style>
-</head>
-<body>
-  <div class="card">
-    <div class="big">🏁</div>
-    <h1>Competição TikTok dos Mentorados</h1>
-    <p>O placar tá quase no ar — a <span class="accent">primeira rodada</span> de coleta
-    publica o leaderboard aqui automaticamente. Volta daqui a pouco.</p>
-  </div>
-</body>
-</html>
+
+<div class="wrap">
+  <header>
+    <div class="h-top">
+      <div>
+        <div class="label label--accent">Competição TikTok</div>
+        <h1 class="h-title">Placar dos Mentorados</h1>
+      </div>
+      <button id="theme-btn" title="Alternar tema" aria-label="Alternar tema claro/escuro">◐</button>
+    </div>
+    <hr class="h-rule">
+    <div class="h-meta"><span id="updated"></span><span id="days-left"></span></div>
+  </header>
+
+  <nav class="months" id="months" aria-label="Selecionar mês"></nav>
+  <div id="banner"></div>
+  <main id="main"></main>
+
+  <footer>Atualizado automaticamente a cada 2h (7h–23h) · métricas públicas do TikTok · <a href="admin.html" style="color:inherit">admin</a></footer>
+</div>
+
+<script>
+const DATA = {"generated_at": "2026-08-03T23:38:53Z", "timezone": "America/Sao_Paulo", "scoring": {"points_per_post": 100, "max_scored_posts_per_day": 3, "min_views_for_post_points": 100, "points_per_1000_views": 10, "views_cap_per_video": 500000, "engagement_bonus": {"min_views": 1000, "tiers": [{"min_rate": 0.05, "points": 25}, {"min_rate": 0.1, "points": 50}]}, "min_views_for_eng_ranking": 1000}, "current": {"month": "2026-08", "standings": [{"handle": "priscianeepereira", "display_name": "Prisciane Pereira", "points": 446, "points_posts": 200, "points_views": 246, "points_bonus": 0, "posts": 3, "views": 24627, "likes": 683, "comments": 71, "shares": 28, "saves": 107, "eng_rate": 0.0318, "eng_eligible": true, "top_videos": [{"id": "7669854039047163144", "url": "https://www.tiktok.com/@priscianeepereira/video/7669854039047163144", "caption": "sobre a nova moda de ANALISAR tudo a partir do que se vê na internet. PARA DE DAR PALCO PRA DOIDO e me segue #laranester", "views": 24300, "posted_at": "2026-08-03T14:11:03-03:00"}, {"id": "7669886707877170450", "url": "https://www.tiktok.com/@priscianeepereira/video/7669886707877170450", "caption": "e você aí comprando curso de como vender mais em CALL 😇", "views": 276, "posted_at": "2026-08-03T16:17:49-03:00"}, {"id": "7669944401162013970", "url": "https://www.tiktok.com/@priscianeepereira/video/7669944401162013970", "caption": "postando 6 vídeos por dia ", "views": 51, "posted_at": "2026-08-03T20:01:49-03:00"}], "rank_points": 1, "rank_posts": 2, "rank_views": 1, "rank_eng": 2}, {"handle": "alefmarqs", "display_name": "Alef Marques", "points": 328, "points_posts": 300, "points_views": 28, "points_bonus": 0, "posts": 4, "views": 2797, "likes": 206, "comments": 33, "shares": 3, "saves": 25, "eng_rate": 0.0865, "eng_eligible": true, "top_videos": [{"id": "7669758196818398472", "url": "https://www.tiktok.com/@alefmarqs/video/7669758196818398472", "caption": "Crio um perfil do zero, ou continuo nesse aqui? ", "views": 987, "posted_at": "2026-08-03T07:59:02-03:00"}, {"id": "7669816607811718408", "url": "https://www.tiktok.com/@alefmarqs/video/7669816607811718408", "caption": "Relacionamento nenhum sobrevive  10 anos apenas por amor.", "views": 984, "posted_at": "2026-08-03T11:45:44-03:00"}, {"id": "7669853715867667719", "url": "https://www.tiktok.com/@alefmarqs/video/7669853715867667719", "caption": "Seus conflitos internos só acontecem porque você não é um, você tem partes. Saber disso vai te harmonizar, integregar, a", "views": 655, "posted_at": "2026-08-03T14:09:45-03:00"}], "rank_points": 2, "rank_posts": 1, "rank_views": 2, "rank_eng": 1}, {"handle": "euisabelemoreira", "display_name": "Isabele Moreira", "points": 0, "points_posts": 0, "points_views": 0, "points_bonus": 0, "posts": 0, "views": 0, "likes": 0, "comments": 0, "shares": 0, "saves": 0, "eng_rate": 0.0, "eng_eligible": false, "top_videos": [], "rank_points": 3, "rank_posts": 3, "rank_views": 3, "rank_eng": null}, {"handle": "camilanardi_", "display_name": "Camila Nardi", "points": 0, "points_posts": 0, "points_views": 0, "points_bonus": 0, "posts": 0, "views": 0, "likes": 0, "comments": 0, "shares": 0, "saves": 0, "eng_rate": 0.0, "eng_eligible": false, "top_videos": [], "rank_points": 4, "rank_posts": 4, "rank_views": 4, "rank_eng": null}], "daily_series": {"priscianeepereira": [{"d": "2026-08-03", "posts": 3, "views": 24627, "points": 446}], "alefmarqs": [{"d": "2026-08-03", "posts": 4, "views": 2797, "points": 328}], "euisabelemoreira": [{"d": "2026-08-03", "posts": 0, "views": 0, "points": 0}], "camilanardi_": [{"d": "2026-08-03", "posts": 0, "views": 0, "points": 0}]}, "warnings": {"missing_profiles": [], "unknown_handles": [], "last_run_at": "2026-08-03T23:38Z"}}, "months": []};
+
+/* ── estado / helpers ─────────────────────── */
+const $ = (s, el) => (el || document).querySelector(s);
+const state = { month: null, rkTab: "posts" };
+
+const fmt = new Intl.NumberFormat("pt-BR");
+const fmtC = new Intl.NumberFormat("pt-BR", { notation: "compact", maximumFractionDigits: 1 });
+const nf = n => fmt.format(n || 0);
+const nc = n => fmtC.format(n || 0);
+const pct = r => (100 * (r || 0)).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%";
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+const MONTH_NAMES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
+const monthLabel = m => { const [y, mm] = m.split("-"); return MONTH_NAMES[+mm - 1] + " " + y; };
+
+const AV_COLORS = ["var(--c-posts)", "var(--c-views)", "var(--c-bonus)", "var(--accent)"];
+const avColor = h => AV_COLORS[[...h].reduce((a, c) => a + c.charCodeAt(0), 0) % AV_COLORS.length];
+const initials = name => name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+
+function viewFor(month) {
+  if (month === DATA.current.month) return { ...DATA.current, closed: false, scoring: DATA.scoring };
+  const m = DATA.months.find(x => x.month === month);
+  return m ? { ...m, closed: true, scoring: m.scoring_snapshot || DATA.scoring, warnings: null } : null;
+}
+
+/* delta de posição vs ontem, a partir da série diária */
+function rankDeltas(series, standings) {
+  const days = [...new Set(Object.values(series || {}).flat().map(p => p.d))].sort();
+  if (days.length < 2) return {};
+  const rankAt = d => {
+    const pts = standings.map(s => {
+      const pt = (series[s.handle] || []).filter(p => p.d <= d).pop();
+      return { h: s.handle, p: pt ? pt.points : 0 };
+    }).sort((a, b) => b.p - a.p);
+    const out = {}; pts.forEach((x, i) => out[x.h] = i + 1); return out;
+  };
+  const prev = rankAt(days[days.length - 2]), cur = rankAt(days[days.length - 1]);
+  const out = {};
+  standings.forEach(s => { out[s.handle] = (prev[s.handle] || 0) - (cur[s.handle] || 0); });
+  return out;
+}
+
+const deltaHTML = d => d == null || d === 0
+  ? '<span class="delta same">—</span>'
+  : d > 0 ? `<span class="delta up">▲ ${d}</span>` : `<span class="delta down">▼ ${-d}</span>`;
+
+/* ── header ───────────────────────────────── */
+function renderUpdated() {
+  const gen = new Date(DATA.generated_at);
+  const min = Math.max(0, Math.round((Date.now() - gen) / 60000));
+  const ago = min < 1 ? "agora mesmo" : min < 60 ? `há ${min} min` : `há ${Math.round(min / 60)} h`;
+  $("#updated").innerHTML = `Atualizado <strong>${ago}</strong>`;
+}
+function renderDaysLeft() {
+  const el = $("#days-left");
+  if (state.month !== DATA.current.month) { el.textContent = ""; return; }
+  const [y, m] = state.month.split("-").map(Number);
+  const end = new Date(y, m, 1); // 1º dia do mês seguinte (fuso do leitor ≈ BRT pro público)
+  const days = Math.max(0, Math.ceil((end - Date.now()) / 86400000));
+  el.innerHTML = ` · <strong>${days}</strong> dia${days === 1 ? "" : "s"} restante${days === 1 ? "" : "s"}`;
+}
+
+function renderMonths() {
+  const all = [DATA.current.month, ...DATA.months.map(m => m.month)];
+  $("#months").innerHTML = all.map(m => `
+    <button class="m-chip" aria-pressed="${m === state.month}" data-month="${m}">
+      ${monthLabel(m)}${m === DATA.current.month ? ' <span class="m-live">AO VIVO</span>' : ""}
+    </button>`).join("");
+}
+
+/* ── seções ───────────────────────────────── */
+function podiumHTML(v, deltas) {
+  const top = v.standings.slice(0, 3);
+  if (!top.length || top.every(s => !s.points)) return "";
+  const card = (s, pos) => s ? `
+    <div class="p-card p-${pos}">
+      <div class="medal medal-${pos}">${pos}º</div>
+      <div class="p-name">${esc(s.display_name)}</div>
+      <div class="p-handle">@${esc(s.handle)}</div>
+      <div class="p-pts num">${nf(s.points)} <small>pts</small></div>
+      ${v.closed ? "" : deltaHTML(deltas[s.handle])}
+    </div>` : "<div></div>";
+  return `<section class="podium">${card(top[1], 2)}${card(top[0], 1)}${card(top[2], 3)}</section>`;
+}
+
+function boardHTML(v) {
+  const max = Math.max(1, ...v.standings.map(s => s.points));
+  const rows = v.standings.map(s => {
+    const segs = [["posts", s.points_posts], ["views", s.points_views], ["bonus", s.points_bonus]]
+      .filter(([, p]) => p > 0)
+      .map(([k, p]) => `<i class="comp-${k}" style="width:${(100 * p / max).toFixed(1)}%" title="${k === "posts" ? "Posts" : k === "views" ? "Views" : "Bônus"}: ${nf(p)} pts"></i>`)
+      .join("");
+    return `
+    <tr data-h="${esc(s.handle)}">
+      <td colspan="3">
+        <button class="row-main" aria-expanded="false">
+          <span class="rank r${s.rank_points} num">${s.rank_points}</span>
+          <span class="row-id">
+            <span class="row-name">${esc(s.display_name)}</span>
+            <span class="comp-bar">${segs}</span>
+          </span>
+          <span class="row-pts num">${nf(s.points)}</span>
+          <span class="row-caret">▶</span>
+        </button>
+        <div class="row-detail">
+          <div class="detail-grid">
+            <div class="d-item"><div class="label">Posts</div><b class="num">${nf(s.posts)}</b></div>
+            <div class="d-item"><div class="label">Views</div><b class="num">${nc(s.views)}</b></div>
+            <div class="d-item"><div class="label">Engaj.</div><b class="num">${s.views ? pct(s.eng_rate) : "—"}</b></div>
+          </div>
+          <div class="d-breakdown">
+            <span class="dot comp-posts"></span>Posts: <b class="num">${nf(s.points_posts)}</b> ·
+            <span class="dot comp-views"></span>Views: <b class="num">${nf(s.points_views)}</b> ·
+            <span class="dot comp-bonus"></span>Bônus: <b class="num">${nf(s.points_bonus)}</b>
+          </div>
+        </div>
+      </td>
+    </tr>`;
+  }).join("");
+  return `
+  <section>
+    <div class="card">
+      <h2>Placar geral</h2>
+      <p class="sub">Pontos combinados — toca numa linha pra ver o detalhe</p>
+      <table class="board">
+        <thead><tr><th style="width:26px">#</th><th>Mentorado</th><th>Pts</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="legend">
+        <span><span class="dot comp-posts"></span>pts de posts</span>
+        <span><span class="dot comp-views"></span>pts de views</span>
+        <span><span class="dot comp-bonus"></span>bônus de engajamento</span>
+      </div>
+    </div>
+  </section>`;
+}
+
+function rankingsHTML(v) {
+  const cfg = {
+    posts: { title: "Posts", val: s => s.posts, fmtv: s => nf(s.posts), sort: s => [s.posts, s.points] },
+    views: { title: "Views", val: s => s.views, fmtv: s => nc(s.views), sort: s => [s.views, s.points] },
+    eng:   { title: "Engajamento", val: s => s.eng_eligible ? s.eng_rate : 0, fmtv: s => pct(s.eng_rate), sort: s => [s.eng_eligible ? 1 : 0, s.eng_rate] },
+  }[state.rkTab];
+  const minViews = (v.scoring || {}).min_views_for_eng_ranking || 1000;
+  const sorted = [...v.standings].sort((a, b) => {
+    const [a1, a2] = cfg.sort(a), [b1, b2] = cfg.sort(b);
+    return b1 - a1 || b2 - a2;
+  });
+  const max = Math.max(1e-9, ...sorted.map(cfg.val));
+  const rows = sorted.map((s, i) => {
+    const inel = state.rkTab === "eng" && !s.eng_eligible;
+    return `
+    <div class="rk-row">
+      <span class="rank num" style="flex:0 0 22px;text-align:center">${i + 1}</span>
+      <span class="rk-name">${esc(s.display_name)}</span>
+      ${inel
+        ? `<span class="rk-track"></span><span class="rk-badge">mín. ${nc(minViews)} views</span>`
+        : `<span class="rk-track"><span class="rk-fill" style="width:${(100 * cfg.val(s) / max).toFixed(1)}%"></span></span>
+           <span class="rk-val num">${cfg.fmtv(s)}</span>`}
+    </div>`;
+  }).join("");
+  return `
+  <section>
+    <div class="card">
+      <h2>Rankings do mês</h2>
+      <p class="sub">Quem mais postou · maior alcance · maior engajamento</p>
+      <div class="rk-tabs">
+        ${["posts", "views", "eng"].map(k => `<button class="rk-tab" data-rk="${k}" aria-pressed="${k === state.rkTab}">${{ posts: "Posts", views: "Views", eng: "Engajamento" }[k]}</button>`).join("")}
+      </div>
+      <div>${rows}</div>
+    </div>
+  </section>`;
+}
+
+function sparkSVG(points) {
+  if (!points || points.length < 2) return "";
+  const w = 260, h = 44, pad = 3;
+  const max = Math.max(1, ...points.map(p => p.points));
+  const xs = i => pad + i * (w - 2 * pad) / (points.length - 1);
+  const ys = p => h - pad - (p.points / max) * (h - 2 * pad);
+  const d = points.map((p, i) => `${i ? "L" : "M"}${xs(i).toFixed(1)},${ys(p).toFixed(1)}`).join("");
+  const last = points[points.length - 1];
+  return `
+  <svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="Evolução diária de pontos, fechando em ${nf(last.points)}">
+    <path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${xs(points.length - 1).toFixed(1)}" cy="${ys(last).toFixed(1)}" r="3.5" fill="var(--accent)" stroke="var(--card)" stroke-width="2"/>
+  </svg>`;
+}
+
+function menteesHTML(v) {
+  const cards = v.standings.map(s => {
+    const series = (v.daily_series || {})[s.handle] || [];
+    const posts = (s.top_videos || []).map(tv => `
+      <li><a href="${esc(tv.url)}" target="_blank" rel="noopener">${esc(tv.caption || "ver no TikTok")}</a><span class="v num">${nc(tv.views)} views</span></li>`).join("");
+    return `
+    <div class="card">
+      <div class="mt-head">
+        <div class="avatar" style="background:${avColor(s.handle)}">${esc(initials(s.display_name))}</div>
+        <div style="min-width:0">
+          <div class="mt-name">${esc(s.display_name)}</div>
+          <div class="mt-handle"><a href="https://www.tiktok.com/@${esc(s.handle)}" target="_blank" rel="noopener">@${esc(s.handle)}</a></div>
+        </div>
+        <div class="mt-rank"><b class="num">${s.rank_points}º</b><div class="label">${nf(s.points)} pts</div></div>
+      </div>
+      ${series.length > 1 ? `<div class="spark-wrap">${sparkSVG(series)}</div>` : ""}
+      <div class="mt-stats">
+        <span><b class="num">${nf(s.posts)}</b> posts</span>
+        <span><b class="num">${nc(s.views)}</b> views</span>
+        <span><b class="num">${s.views ? pct(s.eng_rate) : "—"}</b> engaj.</span>
+      </div>
+      ${posts ? `<ul class="mt-posts">${posts}</ul>` : ""}
+    </div>`;
+  }).join("");
+  return `<section><h2 style="margin-bottom:10px">Mentorados</h2><div class="mentees">${cards}</div></section>`;
+}
+
+function warningsHTML(v) {
+  const w = v.warnings;
+  if (!w) return "";
+  const parts = [];
+  if ((w.missing_profiles || []).length)
+    parts.push(`Sem dados na última coleta: ${w.missing_profiles.map(h => "@" + esc(h)).join(", ")} (conta privada? @ mudou?)`);
+  if ((w.unknown_handles || []).length)
+    parts.push(`Handles fora da lista: ${w.unknown_handles.map(h => "@" + esc(h)).join(", ")}`);
+  if (!parts.length) return "";
+  return `<section><div class="card warn-card"><b>⚠️ Avisos</b>${parts.map(p => `<div>${p}</div>`).join("")}</div></section>`;
+}
+
+function rulesHTML(v) {
+  const sc = v.scoring || {};
+  const eb = sc.engagement_bonus || {};
+  const tiers = (eb.tiers || []).map(t => `${pct(t.min_rate)} → +${nf(t.points)} pts`).join(" · ");
+  return `
+  <section>
+    <div class="card">
+      <h2>Como funciona a pontuação</h2>
+      <ul class="rules">
+        <li><span class="dot comp-posts"></span><b>+${nf(sc.points_per_post)} pts por post</b> no mês — no máximo ${sc.max_scored_posts_per_day} posts pontuáveis por dia, e o vídeo precisa de pelo menos ${nf(sc.min_views_for_post_points)} views.</li>
+        <li><span class="dot comp-views"></span><b>+${nf(sc.points_per_1000_views)} pts a cada 1.000 views</b> — contando até ${nc(sc.views_cap_per_video)} views por vídeo.</li>
+        <li><span class="dot comp-bonus"></span><b>Bônus de engajamento</b> por vídeo com ${nc(eb.min_views)}+ views: taxa (curtidas+comentários+shares ÷ views) de ${tiers || "—"}.</li>
+        <li>Ranking de engajamento: só entra quem tem ${nc(sc.min_views_for_eng_ranking || 1000)}+ views somadas no mês.</li>
+        <li>Desempate no placar geral: total de views, depois número de posts. O ranking zera todo mês.</li>
+      </ul>
+    </div>
+  </section>`;
+}
+
+/* ── render principal ─────────────────────── */
+function render() {
+  const v = viewFor(state.month);
+  renderMonths();
+  renderDaysLeft();
+  const banner = $("#banner");
+  banner.innerHTML = v && v.closed && v.winner
+    ? `<div class="banner"><span class="medal medal-1" style="margin:0;width:28px;height:28px;font-size:11px">1º</span> CAMPEÃO DE ${monthLabel(v.month).toUpperCase()}: ${esc(v.winner.display_name)} — ${nf(v.winner.points)} pts</div>`
+    : "";
+  const main = $("#main");
+  if (!v || !v.standings.length) {
+    main.innerHTML = `<div class="empty"><div class="big">🏁</div>A competição ainda não começou por aqui.<br>Assim que a primeira coleta rodar, o placar aparece.</div>`;
+    return;
+  }
+  const deltas = v.closed ? {} : rankDeltas(v.daily_series, v.standings);
+  main.innerHTML = [
+    podiumHTML(v, deltas),
+    boardHTML(v),
+    rankingsHTML(v),
+    menteesHTML(v),
+    warningsHTML(v),
+    rulesHTML(v),
+  ].join("");
+}
+
+/* ── eventos ──────────────────────────────── */
+document.addEventListener("click", e => {
+  const chip = e.target.closest(".m-chip");
+  if (chip) { state.month = chip.dataset.month; render(); return; }
+  const tab = e.target.closest(".rk-tab");
+  if (tab) { state.rkTab = tab.dataset.rk; render(); return; }
+  const row = e.target.closest(".row-main");
+  if (row) {
+    const tr = row.closest("tr");
+    tr.classList.toggle("open");
+    row.setAttribute("aria-expanded", tr.classList.contains("open"));
+  }
+});
+$("#theme-btn").addEventListener("click", () => {
+  const root = document.documentElement;
+  const dark = root.dataset.theme
+    ? root.dataset.theme === "dark"
+    : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark";
+});
+
+/* ── boot ─────────────────────────────────── */
+state.month = DATA.current.month;
+renderUpdated();
+setInterval(renderUpdated, 60000);
+render();
+</script>
