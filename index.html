@@ -71,6 +71,7 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     margin: 0;
+    overflow-x: clip;
   }
   .wrap { max-width: 680px; margin: 0 auto; padding: 28px 16px 80px; }
   .num { font-variant-numeric: tabular-nums; }
@@ -83,6 +84,10 @@
 
   /* ── header ─────────────────────────────── */
   header { margin-bottom: 18px; }
+  .craft-logo { height: 30px; width: auto; display: block; margin-bottom: 10px; filter: invert(1); }
+  @media (prefers-color-scheme: dark) { .craft-logo { filter: none; } }
+  :root[data-theme="light"] .craft-logo { filter: invert(1); }
+  :root[data-theme="dark"] .craft-logo { filter: none; }
   .h-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
   .h-title { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 4px 0 8px; text-wrap: balance; }
   .h-rule {
@@ -117,6 +122,15 @@
     background: var(--gold-soft); color: var(--gold); font-weight: 700; font-size: 14px;
   }
 
+  /* ── totais do grupo ────────────────────── */
+  .totals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 26px; }
+  .t-tile {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    box-shadow: var(--shadow); padding: 14px 8px 12px; text-align: center; min-width: 0;
+  }
+  .t-tile b { display: block; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+  .t-tile .label { font-size: 9.5px; margin-top: 2px; }
+
   /* ── cards genéricos ────────────────────── */
   section { margin-bottom: 26px; }
   .card {
@@ -127,7 +141,8 @@
   .sub { font-size: 12px; color: var(--muted); margin: 0 0 12px; }
 
   /* ── pódio ──────────────────────────────── */
-  .podium { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 8px; align-items: end; }
+  .podium { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) minmax(0, 1fr); gap: 8px; align-items: end; }
+  .p-card { min-width: 0; }
   .p-card {
     background: var(--card); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);
     padding: 14px 8px 12px; text-align: center;
@@ -176,7 +191,7 @@
   tr.open .row-caret { transform: rotate(90deg); }
   .row-detail { display: none; padding: 2px 10px 14px 42px; }
   tr.open .row-detail { display: block; }
-  .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+  .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px; }
   .d-item { background: var(--accent-soft); border-radius: 10px; padding: 8px 10px; }
   .d-item .label { font-size: 9px; }
   .d-item b { font-size: 14px; }
@@ -201,15 +216,17 @@
     background: var(--warn-soft); color: var(--warn-ink); white-space: nowrap;
   }
 
-  /* ── cards por mentorado ────────────────── */
-  .mentees { display: grid; grid-template-columns: 1fr; gap: 10px; }
-  @media (min-width: 520px) { .mentees { grid-template-columns: 1fr 1fr; } }
+  /* ── cards por participante ─────────────── */
+  .mentees { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  @media (min-width: 520px) { .mentees { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .mentees .card { min-width: 0; }
   .mt-head { display: flex; align-items: center; gap: 10px; }
   .avatar {
     flex: 0 0 40px; width: 40px; height: 40px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 15px;
-    color: var(--accent-ink);
+    color: var(--accent-ink); position: relative; overflow: hidden;
   }
+  .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .mt-name { font-size: 14px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .mt-handle { font-size: 11px; }
   .mt-handle a { color: var(--muted); text-decoration: none; }
@@ -241,8 +258,9 @@
   <header>
     <div class="h-top">
       <div>
-        <div class="label label--accent">Competição TikTok</div>
-        <h1 class="h-title">Placar dos Mentorados</h1>
+        <img class="craft-logo" src="data:image/png;base64,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" alt="Craft Black">
+        <div class="label label--accent">Desafio TikTok</div>
+        <h1 class="h-title">Placar dos Participantes</h1>
       </div>
       <button id="theme-btn" title="Alternar tema" aria-label="Alternar tema claro/escuro">◐</button>
     </div>
@@ -254,11 +272,11 @@
   <div id="banner"></div>
   <main id="main"></main>
 
-  <footer>Atualizado automaticamente a cada 2h (7h–23h) · métricas públicas do TikTok · <a href="admin.html" style="color:inherit">admin</a></footer>
+  <footer>Um desafio <strong>Craft Black</strong> · atualizado automaticamente a cada 2h (7h–23h) · métricas públicas do TikTok · <a href="admin.html" style="color:inherit">admin</a></footer>
 </div>
 
 <script>
-const DATA = {"generated_at": "2026-08-03T23:53:12Z", "timezone": "America/Sao_Paulo", "scoring": {"points_per_post": 100, "max_scored_posts_per_day": 3, "min_views_for_post_points": 100, "points_per_1000_views": 10, "views_cap_per_video": 500000, "engagement_bonus": {"min_views": 1000, "tiers": [{"min_rate": 0.05, "points": 25}, {"min_rate": 0.1, "points": 50}]}, "min_views_for_eng_ranking": 1000}, "current": {"month": "2026-08", "standings": [{"handle": "alefmarqs", "display_name": "Alef Marques", "points": 864, "points_posts": 600, "points_views": 139, "points_bonus": 125, "posts": 7, "views": 13876, "likes": 1251, "comments": 102, "shares": 17, "saves": 196, "eng_rate": 0.0987, "eng_eligible": true, "top_videos": [{"id": "7669549086877551890", "url": "https://www.tiktok.com/@alefmarqs/video/7669549086877551890", "caption": "Você sabe a resposta? O que você realmente quer? ", "views": 7231, "posted_at": "2026-08-02T18:27:49-03:00"}, {"id": "7669576791178202386", "url": "https://www.tiktok.com/@alefmarqs/video/7669576791178202386", "caption": "O que você realmente quer? ", "views": 2275, "posted_at": "2026-08-02T20:15:15-03:00"}, {"id": "7669603546517474578", "url": "https://www.tiktok.com/@alefmarqs/video/7669603546517474578", "caption": "Eu tenho provas, o desafio funciona ", "views": 1573, "posted_at": "2026-08-02T21:59:01-03:00"}], "rank_points": 1, "rank_posts": 2, "rank_views": 2, "rank_eng": 1}, {"handle": "priscianeepereira", "display_name": "Prisciane Pereira", "points": 761, "points_posts": 500, "points_views": 261, "points_bonus": 0, "posts": 8, "views": 26066, "likes": 748, "comments": 82, "shares": 31, "saves": 114, "eng_rate": 0.033, "eng_eligible": true, "top_videos": [{"id": "7669854039047163144", "url": "https://www.tiktok.com/@priscianeepereira/video/7669854039047163144", "caption": "sobre a nova moda de ANALISAR tudo a partir do que se vê na internet. PARA DE DAR PALCO PRA DOIDO e me segue #laranester", "views": 24300, "posted_at": "2026-08-03T14:11:03-03:00"}, {"id": "7669172133624433927", "url": "https://www.tiktok.com/@priscianeepereira/video/7669172133624433927", "caption": "#catolicos #protestante ", "views": 396, "posted_at": "2026-08-01T18:04:56-03:00"}, {"id": "7669114563425684744", "url": "https://www.tiktok.com/@priscianeepereira/video/7669114563425684744", "caption": "#mentalidade #yapping ", "views": 366, "posted_at": "2026-08-01T14:21:30-03:00"}], "rank_points": 2, "rank_posts": 1, "rank_views": 1, "rank_eng": 2}, {"handle": "euisabelemoreira", "display_name": "Isabele Moreira", "points": 107, "points_posts": 100, "points_views": 7, "points_bonus": 0, "posts": 1, "views": 728, "likes": 71, "comments": 1, "shares": 0, "saves": 0, "eng_rate": 0.0989, "eng_eligible": false, "top_videos": [{"id": "7669484546135510292", "url": "https://www.tiktok.com/@euisabelemoreira/video/7669484546135510292", "caption": "Quando um grupo de homens constrói um prédio inteiro pra não precisar se controlar, ele descreve com precisão o próprio ", "views": 728, "posted_at": "2026-08-02T14:17:10-03:00"}], "rank_points": 3, "rank_posts": 3, "rank_views": 3, "rank_eng": null}, {"handle": "camilanardi_", "display_name": "Camila Nardi", "points": 0, "points_posts": 0, "points_views": 0, "points_bonus": 0, "posts": 0, "views": 0, "likes": 0, "comments": 0, "shares": 0, "saves": 0, "eng_rate": 0.0, "eng_eligible": false, "top_videos": [], "rank_points": 4, "rank_posts": 4, "rank_views": 4, "rank_eng": null}], "daily_series": {"priscianeepereira": [{"d": "2026-08-03", "posts": 3, "views": 24627, "points": 446}], "alefmarqs": [{"d": "2026-08-03", "posts": 4, "views": 2797, "points": 328}], "euisabelemoreira": [{"d": "2026-08-03", "posts": 0, "views": 0, "points": 0}], "camilanardi_": [{"d": "2026-08-03", "posts": 0, "views": 0, "points": 0}]}, "warnings": {"missing_profiles": [], "unknown_handles": [], "last_run_at": "2026-08-03T23:38Z"}}, "months": []};
+const DATA = {"generated_at": "2026-08-04T00:26:12Z", "timezone": "America/Sao_Paulo", "scoring": {"points_per_post": 100, "max_scored_posts_per_day": 10, "min_views_for_post_points": 100, "points_per_1000_views": 2, "views_cap_per_video": 500000, "engagement_bonus": {"min_views": 1000, "tiers": [{"min_rate": 0.05, "points": 25}, {"min_rate": 0.1, "points": 50}]}, "min_views_for_eng_ranking": 1000}, "avatars": {}, "current": {"month": "2026-08", "standings": [{"handle": "alefmarqs", "display_name": "Alef Marques", "points": 1591, "points_posts": 1000, "points_views": 341, "points_bonus": 250, "posts": 10, "views": 170522, "likes": 25291, "comments": 542, "shares": 1326, "saves": 11628, "eng_rate": 0.1593, "eng_eligible": true, "top_videos": [{"id": "7669505665651444999", "url": "https://www.tiktok.com/@alefmarqs/video/7669505665651444999", "caption": "Um vídeo como esse mudou a minha vida completamente.", "views": 153600, "posted_at": "2026-08-02T15:39:10-03:00"}, {"id": "7669549086877551890", "url": "https://www.tiktok.com/@alefmarqs/video/7669549086877551890", "caption": "Você sabe a resposta? O que você realmente quer? ", "views": 7292, "posted_at": "2026-08-02T18:27:49-03:00"}, {"id": "7669576791178202386", "url": "https://www.tiktok.com/@alefmarqs/video/7669576791178202386", "caption": "O que você realmente quer? ", "views": 2284, "posted_at": "2026-08-02T20:15:15-03:00"}], "rank_points": 1, "rank_posts": 1, "rank_views": 1, "rank_eng": 1}, {"handle": "priscianeepereira", "display_name": "Prisciane Pereira", "points": 857, "points_posts": 800, "points_views": 57, "points_bonus": 0, "posts": 8, "views": 28648, "likes": 818, "comments": 88, "shares": 34, "saves": 118, "eng_rate": 0.0328, "eng_eligible": true, "top_videos": [{"id": "7669854039047163144", "url": "https://www.tiktok.com/@priscianeepereira/video/7669854039047163144", "caption": "sobre a nova moda de ANALISAR tudo a partir do que se vê na internet. PARA DE DAR PALCO PRA DOIDO e me segue #laranester", "views": 26800, "posted_at": "2026-08-03T14:11:03-03:00"}, {"id": "7669172133624433927", "url": "https://www.tiktok.com/@priscianeepereira/video/7669172133624433927", "caption": "#catolicos #protestante ", "views": 398, "posted_at": "2026-08-01T18:04:56-03:00"}, {"id": "7669114563425684744", "url": "https://www.tiktok.com/@priscianeepereira/video/7669114563425684744", "caption": "#mentalidade #yapping ", "views": 366, "posted_at": "2026-08-01T14:21:30-03:00"}], "rank_points": 2, "rank_posts": 2, "rank_views": 2, "rank_eng": 2}, {"handle": "euisabelemoreira", "display_name": "Isabele Moreira", "points": 101, "points_posts": 100, "points_views": 1, "points_bonus": 0, "posts": 1, "views": 729, "likes": 71, "comments": 1, "shares": 0, "saves": 0, "eng_rate": 0.0988, "eng_eligible": false, "top_videos": [{"id": "7669484546135510292", "url": "https://www.tiktok.com/@euisabelemoreira/video/7669484546135510292", "caption": "Quando um grupo de homens constrói um prédio inteiro pra não precisar se controlar, ele descreve com precisão o próprio ", "views": 729, "posted_at": "2026-08-02T14:17:10-03:00"}], "rank_points": 3, "rank_posts": 3, "rank_views": 3, "rank_eng": null}, {"handle": "camilanardi_", "display_name": "Camila Nardi", "points": 0, "points_posts": 0, "points_views": 0, "points_bonus": 0, "posts": 0, "views": 0, "likes": 0, "comments": 0, "shares": 0, "saves": 0, "eng_rate": 0.0, "eng_eligible": false, "top_videos": [], "rank_points": 4, "rank_posts": 4, "rank_views": 4, "rank_eng": null}], "daily_series": {"alefmarqs": [{"d": "2026-08-03", "posts": 10, "views": 170522, "points": 1591}], "priscianeepereira": [{"d": "2026-08-03", "posts": 8, "views": 28648, "points": 857}], "euisabelemoreira": [{"d": "2026-08-03", "posts": 1, "views": 729, "points": 101}], "camilanardi_": [{"d": "2026-08-03", "posts": 0, "views": 0, "points": 0}]}, "warnings": {"missing_profiles": [], "unknown_handles": [], "last_run_at": "2026-08-04T00:08Z"}}, "months": []};
 
 /* ── estado / helpers ─────────────────────── */
 const $ = (s, el) => (el || document).querySelector(s);
@@ -270,6 +288,10 @@ const nf = n => fmt.format(n || 0);
 const nc = n => fmtC.format(n || 0);
 const pct = r => (100 * (r || 0)).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%";
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const shortCap = (s, n = 8) => {
+  const w = String(s || "").trim().split(/\s+/).filter(Boolean);
+  return w.length <= n ? w.join(" ") : w.slice(0, n).join(" ") + "…";
+};
 
 const MONTH_NAMES = ["janeiro","fevereiro","março","abril","maio","junho","julho","agosto","setembro","outubro","novembro","dezembro"];
 const monthLabel = m => { const [y, mm] = m.split("-"); return MONTH_NAMES[+mm - 1] + " " + y; };
@@ -330,6 +352,27 @@ function renderMonths() {
 }
 
 /* ── seções ───────────────────────────────── */
+function totalsHTML(v) {
+  const t = v.standings.reduce((a, s) => {
+    a.posts += s.posts; a.views += s.views;
+    a.inter += s.likes + s.comments + s.shares;
+    return a;
+  }, { posts: 0, views: 0, inter: 0 });
+  if (!t.posts && !t.views) return "";
+  return `
+  <section class="totals">
+    <div class="t-tile"><b class="num">${nf(t.posts)}</b><div class="label">Posts do grupo</div></div>
+    <div class="t-tile"><b class="num">${nc(t.views)}</b><div class="label">Alcance total</div></div>
+    <div class="t-tile"><b class="num">${nc(t.inter)}</b><div class="label">Interações</div></div>
+  </section>`;
+}
+
+function avatarHTML(s, size) {
+  const av = (DATA.avatars || {})[s.handle];
+  const img = av ? `<img src="${esc(av)}" alt="" loading="lazy" onerror="this.remove()">` : "";
+  return `<div class="avatar" style="background:${avColor(s.handle)}${size ? `;flex-basis:${size}px;width:${size}px;height:${size}px` : ""}">${esc(initials(s.display_name))}${img}</div>`;
+}
+
 function podiumHTML(v, deltas) {
   const top = v.standings.slice(0, 3);
   if (!top.length || top.every(s => !s.points)) return "";
@@ -384,7 +427,7 @@ function boardHTML(v) {
       <h2>Placar geral</h2>
       <p class="sub">Pontos combinados — toca numa linha pra ver o detalhe</p>
       <table class="board">
-        <thead><tr><th style="width:26px">#</th><th>Mentorado</th><th>Pts</th></tr></thead>
+        <thead><tr><th style="width:26px">#</th><th>Participante</th><th>Pts</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
       <div class="legend">
@@ -452,11 +495,11 @@ function menteesHTML(v) {
   const cards = v.standings.map(s => {
     const series = (v.daily_series || {})[s.handle] || [];
     const posts = (s.top_videos || []).map(tv => `
-      <li><a href="${esc(tv.url)}" target="_blank" rel="noopener">${esc(tv.caption || "ver no TikTok")}</a><span class="v num">${nc(tv.views)} views</span></li>`).join("");
+      <li><a href="${esc(tv.url)}" target="_blank" rel="noopener">${esc(shortCap(tv.caption) || "ver no TikTok")}</a><span class="v num">${nc(tv.views)} views</span></li>`).join("");
     return `
     <div class="card">
       <div class="mt-head">
-        <div class="avatar" style="background:${avColor(s.handle)}">${esc(initials(s.display_name))}</div>
+        ${avatarHTML(s)}
         <div style="min-width:0">
           <div class="mt-name">${esc(s.display_name)}</div>
           <div class="mt-handle"><a href="https://www.tiktok.com/@${esc(s.handle)}" target="_blank" rel="noopener">@${esc(s.handle)}</a></div>
@@ -472,7 +515,7 @@ function menteesHTML(v) {
       ${posts ? `<ul class="mt-posts">${posts}</ul>` : ""}
     </div>`;
   }).join("");
-  return `<section><h2 style="margin-bottom:10px">Mentorados</h2><div class="mentees">${cards}</div></section>`;
+  return `<section><h2 style="margin-bottom:10px">Participantes</h2><div class="mentees">${cards}</div></section>`;
 }
 
 function warningsHTML(v) {
@@ -522,6 +565,7 @@ function render() {
   }
   const deltas = v.closed ? {} : rankDeltas(v.daily_series, v.standings);
   main.innerHTML = [
+    totalsHTML(v),
     podiumHTML(v, deltas),
     boardHTML(v),
     rankingsHTML(v),
