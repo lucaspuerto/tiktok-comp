@@ -21,7 +21,7 @@ export default {
 
     const cache = caches.default;
     const cacheKey = new Request(
-      new URL(`${path}?worker-cache=v3`, 'https://tiktok-comp-cache.internal'),
+      new URL(`${path}?worker-cache=v4`, 'https://tiktok-comp-cache.internal'),
       { method: 'GET' },
     );
     const cached = await cache.match(cacheKey);
@@ -55,7 +55,7 @@ export default {
         throw new Error(`GitHub raw: ${rawResponse.status}`);
       }
 
-      response = new Response(rawResponse.body, rawResponse);
+      response = safeResponse(rawResponse);
       response.headers.set('X-Tiktok-Comp-Source', 'github-raw');
       response.headers.set('X-Tiktok-Comp-Commit', sha);
     } catch {
@@ -63,7 +63,7 @@ export default {
       if (!response.ok) {
         response = await fetch(`${GITHUB_PAGES_BACKUP}${path}${url.search}`);
       }
-      response = new Response(response.body, response);
+      response = safeResponse(response);
       response.headers.set('X-Tiktok-Comp-Source', 'backup');
     }
 
@@ -88,4 +88,17 @@ function headAware(request, response) {
         headers: response.headers,
       })
     : response;
+}
+
+function safeResponse(upstream) {
+  const headers = new Headers();
+  for (const name of ['content-type', 'etag', 'last-modified']) {
+    const value = upstream.headers.get(name);
+    if (value) headers.set(name, value);
+  }
+  return new Response(upstream.body, {
+    status: upstream.status,
+    statusText: upstream.statusText,
+    headers,
+  });
 }
