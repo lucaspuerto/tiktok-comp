@@ -1,0 +1,5 @@
+name = "tiktok-comp-fallback"
+main = "src/worker.js"
+compatibility_date = "2026-08-06"
+workers_dev = true
+
