@@ -9,6 +9,9 @@ on:
       - admin.html
       - .github/workflows/deploy-cloudflare-pages.yml
   workflow_dispatch:
+  repository_dispatch:
+    types:
+      - cloudflare-pages-deploy
 
 concurrency:
   group: cloudflare-pages-production
