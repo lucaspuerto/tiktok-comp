@@ -7,6 +7,7 @@ on:
     paths:
       - index.html
       - admin.html
+      - .github/workflows/deploy-cloudflare-pages.yml
   workflow_dispatch:
 
 concurrency:
