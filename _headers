@@ -1,0 +1,13 @@
+# Regras de cache do Cloudflare Pages para os painéis das competições.
+#
+# O padrão do Pages é max-age=14400 — quatro horas de cache NO NAVEGADOR. Como o
+# placar muda 3x por dia, isso fazia o mentorado abrir o link e ver o número de
+# horas atrás, sem nenhum jeito de saber que estava velho. O site estava certo; o
+# celular é que não perguntava.
+#
+# max-age=0 + must-revalidate: o navegador sempre confirma antes de usar a cópia.
+# Com ETag, a confirmação vira um 304 de alguns bytes quando nada mudou.
+# s-maxage=60: o edge do Cloudflare continua servindo cache por 1 minuto, então a
+# origem não sente a diferença.
+/*
+  Cache-Control: public, max-age=0, s-maxage=60, must-revalidate
