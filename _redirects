@@ -1,12 +1,20 @@
-# Rotas dos painéis no Cloudflare Pages.
+# Rotas dos painéis sem o .html.
 #
-# O projeto está em modo SPA: qualquer caminho que não case com um arquivo cai no
-# index.html da raiz — que é a Craft Black. Então quem digitava ou compartilhava
-# "desafio.craftblack.com.br/onm" (sem o .html) via o painel errado, sem nenhum
-# indício de que era a página errada. Aconteceu em 15/08/2026 com o grupo da ONM.
+# ATENÇÃO: hoje este arquivo NÃO está valendo. desafio.craftblack.com.br não é
+# servido pelo projeto do Cloudflare Pages (tiktok-comp.pages.dev está parado e
+# nem tem os painéis novos) — quem responde é um Worker que busca os arquivos no
+# GitHub raw e, quando o caminho não casa com nenhum arquivo, devolve o
+# index.html da raiz (Craft Black) com status 200. O Worker ignora _redirects, e
+# a prova é que ele serve ESTE arquivo como texto em /_redirects; o Pages nunca
+# serviria (ele consome o _redirects no build em vez de publicar).
 #
-# Status 200 é reescrita, não redirecionamento: a URL continua limpa na barra do
-# navegador e o conteúdo servido é o do arquivo certo.
+# Enquanto o Worker não for corrigido, quem resolve é a guarda de rota no topo do
+# tiktok-comp/dashboard/template.html: o index.html da Black detecta que foi
+# servido em /onm ou /blue e se manda pro arquivo certo.
+#
+# Este arquivo fica aqui porque no dia em que o domínio voltar a ser servido pelo
+# Pages ele passa a valer sozinho — e aí a guarda vira redundância inofensiva.
+# Status 200 é reescrita, não redirecionamento: a URL continua limpa na barra.
 /blue      /blue.html        200
 /blue/     /blue.html        200
 /onm       /onm.html         200
