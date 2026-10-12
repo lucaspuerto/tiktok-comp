@@ -1,5 +1,7 @@
 <title>Competição TikTok — Mentorados</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F2EFFA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0D0C1D" media="(prefers-color-scheme: dark)">
 <script>
   // Guarda de rota — esta página é o "fallback" do domínio.
   //
@@ -78,22 +80,22 @@
     --bg: #F2EFFA;
     --card: #FFFFFF;
     --ink: #17162B;
-    --muted: #6F6C85;
+    --muted: #625F79;
     --accent: #6D43E8;
     --accent-ink: #FFFFFF;
     --accent-soft: #EFEAFD;
     --border: #E4E0F2;
     --border-strong: #CDC7E8;
     --shadow: 0 1px 2px rgba(23, 22, 43, 0.05), 0 6px 20px rgba(109, 67, 232, 0.05);
-    --live: #0B7F58;
+    --live: #08704D;
     --live-soft: #E0F4EC;
     --warn-soft: #FDF3E0;
-    --warn-ink: #A86000;
+    --warn-ink: #955500;
     /* composição de pontos — paleta categórica validada (light vs #fff) */
     --c-posts: #6D43E8;
     --c-views: #0089AB;
     --c-bonus: #D61F7F;
-    --gold: #A86000;   --gold-soft: #FBEFD7;
+    --gold: #955500;   --gold-soft: #FBEFD7;
     --silver: #5B5874; --silver-soft: #EDEBF6;
     --bronze: #9A4E20; --bronze-soft: #F7E8DD;
   }
@@ -112,14 +114,14 @@
     }
   }
   :root[data-theme="light"] {
-    --bg: #F2EFFA; --card: #FFFFFF; --ink: #17162B; --muted: #6F6C85;
+    --bg: #F2EFFA; --card: #FFFFFF; --ink: #17162B; --muted: #625F79;
     --accent: #6D43E8; --accent-ink: #FFFFFF; --accent-soft: #EFEAFD;
     --border: #E4E0F2; --border-strong: #CDC7E8;
     --shadow: 0 1px 2px rgba(23, 22, 43, 0.05), 0 6px 20px rgba(109, 67, 232, 0.05);
-    --live: #0B7F58; --live-soft: #E0F4EC;
-    --warn-soft: #FDF3E0; --warn-ink: #A86000;
+    --live: #08704D; --live-soft: #E0F4EC;
+    --warn-soft: #FDF3E0; --warn-ink: #955500;
     --c-posts: #6D43E8; --c-views: #0089AB; --c-bonus: #D61F7F;
-    --gold: #A86000; --gold-soft: #FBEFD7;
+    --gold: #955500; --gold-soft: #FBEFD7;
     --silver: #5B5874; --silver-soft: #EDEBF6;
     --bronze: #9A4E20; --bronze-soft: #F7E8DD;
   }
@@ -201,7 +203,7 @@
     box-shadow: var(--shadow); padding: 14px 8px 12px; text-align: center; min-width: 0;
   }
   .t-tile b { display: block; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
-  .t-tile .label { font-size: 9.5px; margin-top: 2px; }
+  .t-tile .label { font-size: 10.5px; margin-top: 2px; }
 
   /* ── cards genéricos ────────────────────── */
   section { margin-bottom: 26px; }
@@ -265,7 +267,7 @@
   tr.open .row-detail { display: block; }
   .detail-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px; }
   .d-item { background: var(--accent-soft); border-radius: 10px; padding: 8px 10px; }
-  .d-item .label { font-size: 9px; }
+  .d-item .label { font-size: 10.5px; }
   .d-item b { font-size: 14px; }
   .d-breakdown { font-size: 12px; color: var(--muted); }
   .dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; vertical-align: baseline; }
@@ -284,7 +286,7 @@
   .rk-fill { display: block; height: 100%; border-radius: 0 4px 4px 0; background: var(--accent); min-width: 2px; }
   .rk-val { flex: 0 0 auto; font-size: 12px; font-weight: 700; min-width: 52px; text-align: right; }
   .rk-badge {
-    font-size: 9px; font-weight: 700; letter-spacing: 0.05em; border-radius: 999px; padding: 1px 6px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.04em; border-radius: 999px; padding: 2px 7px;
     background: var(--warn-soft); color: var(--warn-ink); white-space: nowrap;
   }
 
@@ -300,11 +302,11 @@
   /* display:block é obrigatório: ellipsis não corta texto em elemento inline */
   .tv-cap { display: block; font-size: 13px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .tv-cap a { color: inherit; text-decoration: none; }
-  .tv-cap a:hover { color: var(--accent); }
+  @media (hover: hover) and (pointer: fine) { .tv-cap a:hover { color: var(--accent); } }
   .tv-who { display: block; font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .tv-views { flex: 0 0 auto; text-align: right; }
   .tv-views b { display: block; font-size: 14px; font-weight: 800; font-variant-numeric: tabular-nums; }
-  .tv-views .label { display: block; font-size: 9px; }
+  .tv-views .label { display: block; font-size: 10.5px; }
 
   /* ── ver mais / ver menos ───────────────── */
   .more-btn {
@@ -313,7 +315,7 @@
     border: 1px solid var(--border-strong); background: var(--card); color: var(--accent);
     border-radius: 12px; font-size: 13px; font-weight: 700;
   }
-  .more-btn:hover { background: var(--accent-soft); }
+  @media (hover: hover) and (pointer: fine) { .more-btn:hover { background: var(--accent-soft); } }
   .more-btn .sign { font-size: 16px; line-height: 1; }
 
   /* ── cards por participante ─────────────── */
@@ -332,7 +334,7 @@
   .mt-handle a { color: var(--muted); text-decoration: none; }
   .mt-rank { margin-left: auto; text-align: right; }
   .mt-rank b { font-size: 16px; }
-  .mt-rank .label { font-size: 9px; }
+  .mt-rank .label { font-size: 10.5px; }
   .spark-wrap { margin: 10px 0 4px; }
   .spark { width: 100%; height: 44px; display: block; }
   .mt-stats { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
@@ -340,7 +342,7 @@
   .mt-posts { list-style: none; margin: 8px 0 0; padding: 8px 0 0; border-top: 1px solid var(--border); }
   .mt-posts li { margin-bottom: 6px; font-size: 12px; display: flex; gap: 8px; align-items: baseline; }
   .mt-posts a { color: var(--ink); text-decoration: none; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .mt-posts a:hover { color: var(--accent); }
+  @media (hover: hover) and (pointer: fine) { .mt-posts a:hover { color: var(--accent); } }
   .mt-posts .v { color: var(--muted); flex: 0 0 auto; }
 
   /* ── avisos / regras / vazio ────────────── */
@@ -352,6 +354,24 @@
   .empty { text-align: center; padding: 40px 16px; color: var(--muted); font-size: 14px; }
   .empty .big { font-size: 34px; margin-bottom: 8px; }
   footer { margin-top: 32px; font-size: 11px; color: var(--muted); text-align: center; }
+
+  .podium-note { grid-column: 1 / -1; margin: 4px 2px 0; font-size: 12.5px; line-height: 1.45; color: var(--muted); text-align: center; text-wrap: balance; }
+  .podium-note b { color: var(--ink); }
+
+  /* ── toque no celular ───────────────────────
+     Sem o flash cinza do toque, sem selecionar texto ao segurar um botão, sem a
+     espera de duplo toque; quem usa teclado continua vendo o foco. Em compensação,
+     o botão responde ao dedo (:active), que é o feedback que o flash dava. */
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button { touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+  button:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .months { overscroll-behavior-x: contain; }
+  .m-chip, .rk-tab, .more-btn, #theme-btn { transition: transform 0.12s ease-out, background-color 0.12s; }
+  .m-chip:active, .rk-tab:active, .more-btn:active, #theme-btn:active { transform: scale(0.97); }
+  .row-main:active { background: var(--accent-soft); }
+  @media (prefers-reduced-motion: reduce) {
+    .m-chip:active, .rk-tab:active, .more-btn:active, #theme-btn:active { transform: none; }
+  }
 
   /* ── fundo animado (Vanta Dots) ─────────────
      Fica atrás do cabeçalho, em largura total, e se funde com a página no pé.
@@ -522,7 +542,13 @@ function podiumHTML(v, deltas) {
       <div class="p-pts num">${nf(s.points)} <small>pts</small></div>
       ${v.closed ? "" : deltaHTML(deltas[s.handle])}
     </div>` : "<div></div>";
-  return `<section class="podium">${card(top[1], 2)}${card(top[0], 1)}${card(top[2], 3)}</section>`;
+  // Empate no topo: sem esta nota, o pódio dá 1º, 2º e 3º pra quem tem os mesmos
+  // pontos e parece que a ordem é arbitrária. A ordem vem do desempate das regras.
+  const empatados = v.standings.filter(s => s.points === top[0].points).length;
+  const nota = empatados > 1
+    ? `<p class="podium-note"><b>${empatados} pessoas empatadas com ${nf(top[0].points)} pts.</b> A ordem segue o desempate: quem publicou mais vídeos fica na frente.</p>`
+    : "";
+  return `<section class="podium">${card(top[1], 2)}${card(top[0], 1)}${card(top[2], 3)}${nota}</section>`;
 }
 
 function boardHTML(v) {
@@ -828,8 +854,12 @@ function fxAnimar(tudo) {
     if (!v || !v.standings.length) return;
 
     // barras dos rankings enchem da esquerda
+    // O atraso para na 10ª barra: com "ver todos" eram 75 × 0,04 s = 3,7 s até a
+    // última encher. Na troca de aba (tudo=false) a animação é curta, porque a
+    // pessoa só quer comparar.
     gsap.utils.toArray(".rk-fill").forEach((el, i) => {
-      gsap.from(el, { scaleX: 0, transformOrigin: "left center", duration: 0.7, ease: "power3.out", delay: i * 0.04,
+      gsap.from(el, { scaleX: 0, transformOrigin: "left center", duration: tudo ? 0.7 : 0.35, ease: "power3.out",
+        delay: Math.min(i, 9) * (tudo ? 0.04 : 0.02),
         scrollTrigger: { trigger: el, start: "top 92%", once: true } });
     });
     if (!tudo) return;
